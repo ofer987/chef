@@ -124,4 +124,4 @@ default['nginx']['default']['modules']          = []
 
 default['nginx']['extra_configs'] = {}
 
-default['nginx']['load_modules'] = []
+default['nginx']['load_modules'] = %w[http_v2_module http_ssl_module]
