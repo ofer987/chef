@@ -26,3 +26,10 @@ include_recipe "nginx::#{node['nginx']['install_method']}"
 node['nginx']['default']['modules'].each do |ngx_module|
   include_recipe "nginx::#{ngx_module}"
 end
+
+# transit.tips
+SITE = 'transit.tips'
+nginx_site SITE do
+  enable true
+  template SITE
+end
