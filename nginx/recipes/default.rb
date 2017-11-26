@@ -33,3 +33,31 @@ nginx_site SITE do
   enable true
   template "sites-available/#{SITE}"
 end
+
+def copy_certificate(source_path)
+  source_path = source_path.to_s.strip
+  return nil if source_path.to_s.empty?
+
+  destinationDir = '/etc/nginx/ssl'
+  source_basename = Pathname
+    .new(source_path)
+    .basename
+
+  directory destinationDir do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
+
+  file "#{destinationDir}/#{source_basename}" do
+    content 'foobar'
+    mode '0755'
+    owner 'root'
+    group 'root'
+  end
+end
+
+['certificates/transit.tips.chained.crt', 'certificates/transit.tips.key'].each do |path|
+  copy_certificate(path)
+end
