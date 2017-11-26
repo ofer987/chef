@@ -31,5 +31,5 @@ end
 SITE = 'transit.tips'
 nginx_site SITE do
   enable true
-  template SITE
+  template "sites-available/#{SITE}"
 end
