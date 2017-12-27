@@ -1,0 +1,5 @@
+{
+  "id": "mysql",
+  "root_password": "what_a-hard-password_this_will_be-to-cr@ck",
+  "admin_password": "foobar-not-an-easy-password-tocr@ck"
+}
