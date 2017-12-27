@@ -8,7 +8,7 @@ passwords = data_bag_item('passwords', 'mysql')
 dbname = node['lamp']['database']['dbname']
 db_addr = '127.0.0.1'
 mysql_connection_info = {
-  host: host_addr,
+  host: db_addr,
   username: 'root',
   password: passwords['root_password']
 }
@@ -37,7 +37,7 @@ end
 # create the database admin user
 mysql_database_user node['lamp']['database']['admin_username'] do
   connection mysql_connection_info
-  host host_addr
+  host db_addr
   password passwords['admin_password']
   database_name dbname
   action %i[create grant]
