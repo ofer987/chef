@@ -21,7 +21,11 @@ describe service 'apache2-default' do
 end
 
 describe command 'wget -qSO- --spider localhost' do
-  its('stderr') { is_expected.to match %r{HTTP/1\.1 200 OK} }
+  its(:stderr) { is_expected.to match %r{HTTP/1\.1 200 OK} }
+end
+
+describe command 'wget -qO- localhost' do
+  its(:stdout) { is_expected.to match %r{Another message from the outside} }
 end
 
 describe port 80 do

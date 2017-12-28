@@ -20,10 +20,34 @@ end
 
 httpd_config 'default' do
   source 'default.conf.erb'
+  instance 'default'
 end
 
 httpd_service 'default' do
+  instance 'default'
   mpm 'prefork'
   action [:create, :start]
+  run_user 'web_admin'
+  run_group 'web_admin'
   subscribes :restart, 'httpd_config[default]'
+end
+
+# php7
+httpd_module 'php7' do
+  instance 'default'
+  package_name 'libapache2-mod-php'
+  filename 'libphp7.0.so'
+end
+
+# php7 for mysql
+package 'php-mysql' do
+  action :install
+  notifies :restart, 'httpd_service[default]'
+end
+
+template "#{node['lamp']['web']['document_root']}/index.php" do
+  source 'index.php.erb'
+  variables(
+    message: 'from the outside'
+  )
 end
