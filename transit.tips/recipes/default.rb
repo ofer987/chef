@@ -25,4 +25,4 @@
 # THE SOFTWARE.
 
 include_recipe 'transit.tips::git_client'
-include_recipe 'transit.tips::web'
+include_recipe 'transit.tips::client'
