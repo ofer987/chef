@@ -4,22 +4,42 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-# TODO: rename to web
+# TODO: rename to web_client or something else or put in a module/dir
 
 include_recipe 'nginx::default'
 
-transit_tips_path = File.join("~#{node['nginx']['user']}", node['transit.tips']['dir'])
+transit_tips_path = File.join(Dir.home('vagrant'), node['transit.tips']['dir'])
+www_transit_tips_path = File.join(Dir.home(node['nginx']['user']), node['transit.tips']['dir'])
 
-ssl_certificate_path = File.join("~#{node['nginx']['user']}", node['secrets']['dir'], 'certificates', 'transit.tips.chained.crt')
-ssl_key_path = File.join("~#{node['nginx']['user']}", node['secrets']['dir'], 'certificates', 'transit.tips.key')
+ssl_certificate_path = File.join(Dir.home('vagrant'), node['secrets']['dir'], 'certificates', 'transit.tips.chained.crt')
+ssl_key_path = File.join(Dir.home('vagrant'), node['secrets']['dir'], 'certificates', 'transit.tips.key')
 
 nginx_site 'client' do
   action :enable
   name 'client'
   template 'client.erb'
   variables(
-    client_path: File.join(transit_tips_path, 'client'),
-    ssl_certificate: ssl_certificate_path,
+    client_path: File.join(www_transit_tips_path, 'client'),
+    ssl_certificate_path: ssl_certificate_path,
     ssl_certificate_key: ssl_key_path
   )
+end
+
+execute 'which erb live stream' do
+  action :run
+  user 'vagrant'
+  live_stream true
+  command 'echo `which erb`'
+end
+
+execute 'install client' do
+  action :run
+  user 'vagrant'
+  cwd transit_tips_path
+  command "RESTBUS_URL=#{node['transit.tips']['restbus']['public_url']} make install"
+end
+
+execute "move clients to nginx's www directory" do
+  action :run
+  command "cp -R #{transit_tips_path} #{www_transit_tips_path}"
 end

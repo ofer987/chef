@@ -9,7 +9,8 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 
 depends 'nginx', '~> 7.0.2'
 depends 'git', '~> 8.0.0'
-# depends 'ruby_rbenv', '~> 2.0.5'
+depends 'nodejs', '~> 5.0.0'
+depends 'ruby_rbenv', '~> 2.0.5'
 
 # The `issues_url` points to the location where issues for this cookbook are
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when

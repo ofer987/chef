@@ -1,9 +1,8 @@
 server {
   listen 443 ssl;
-  server_name ~^(www\.)?transit\.tips$;
+  server_name ~^(www\.)?transit\.tips$ localhost 192.168.8.8;
 
   root <%= @client_path %>;
-  root /http/transit.tips/client;
 
   ssl_certificate <%= @ssl_certificate_path %>;
   ssl_certificate_key <%= @ssl_certificate_key %>;
@@ -12,8 +11,9 @@ server {
 server {
   listen 80;
   listen [::]:80;
-  server_name ~^www.transit\.tips$;
+  server_name ~^(www\.)?transit\.tips$ localhost 192.168.8.8;
 
-  return 301 https://$host$request_uri;
+  root <%= @client_path %>;
+  # return 301 https://$host$request_uri;
 }
 

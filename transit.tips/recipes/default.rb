@@ -24,5 +24,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'transit.tips::git_client'
+include_recipe 'transit.tips::chef_user'
+include_recipe 'transit.tips::git'
+include_recipe 'transit.tips::nodejs'
+include_recipe 'transit.tips::ruby'
 include_recipe 'transit.tips::client'
