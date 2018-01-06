@@ -51,12 +51,11 @@ execute "add github.com to #{known_hosts}" do
   command "echo `ssh-keyscan github.com` >> #{known_hosts}"
 end
 
-secrets_path = File.join(chef_user.home, node['secrets']['dir'])
 execute 'clone secrets' do
   action :run
   user chef_user.name
-  command "eval `ssh-agent`; ssh-add #{rsa_ofer987_key_path}; git clone #{node['secrets']['url']} #{secrets_path}"
-  not_if "ls #{secrets_path}"
+  command "eval `ssh-agent`; ssh-add #{rsa_ofer987_key_path}; git clone #{node['secrets']['url']} #{chef_user.secrets_path}"
+  not_if "ls #{chef_user.secrets_path}"
 end
 
 file rsa_ofer987_key_path do

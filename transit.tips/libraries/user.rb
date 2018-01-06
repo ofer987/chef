@@ -37,6 +37,10 @@ module TransitTips
         File.join(home, node['transit.tips']['dir'])
       end
 
+      def secrets_path
+        File.join(home, node['secrets']['dir'])
+      end
+
       private
 
       attr_writer :name, :home
