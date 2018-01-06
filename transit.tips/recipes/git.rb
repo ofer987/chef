@@ -16,14 +16,12 @@ execute 'start ssh agent' do
   command 'eval `ssh-agent`'
 end
 
-transit_tips_path = File.join(chef_user.home, node['transit.tips']['dir'])
-
 # transit.tips
 execute 'clone transit.tips' do
   action :run
   user chef_user.name
-  command "git clone #{node['transit.tips']['url']} #{transit_tips_path}"
-  not_if "ls #{transit_tips_path}"
+  command "git clone #{node['transit.tips']['url']} #{chef_user.transit_tips_path}"
+  not_if "ls #{chef_user.transit_tips_path}"
 end
 
 rsa_ofer987_key_path = File.join(Chef::Config[:file_cache_path], 'rsa_github_ofer987')

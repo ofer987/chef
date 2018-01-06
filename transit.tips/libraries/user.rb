@@ -5,25 +5,25 @@
 module TransitTips
   module UserHelpers
     class User
-      attr_reader :name, :home_dir
+      attr_reader :name, :home
 
-      def initialize(name, home_dir)
+      def initialize(name, home)
         self.name = name or raise 'name cannot be nil'
-        self.home_dir = home_dir or raise 'home_dir cannot be nil'
+        self.home = home or raise 'home cannot be nil'
       end
 
       def create!
         user name do
-          home home_dir
+          home home
           shell '/bin/bash'
           action :create
         end
       end
 
       def create_home!
-        return unless Dir.exist?(home_dir)
+        return unless Dir.exist?(home)
 
-        directory home_dir do
+        directory home do
           recursive true
           mode 0755
           owner name
@@ -33,9 +33,13 @@ module TransitTips
         end
       end
 
+      def transit_tips_path
+        File.join(home, node['transit.tips']['dir'])
+      end
+
       private
 
-      attr_writer :name, :home_dir
+      attr_writer :name, :home
     end
 
     def chef
