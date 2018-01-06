@@ -6,23 +6,22 @@
 
 include_recipe 'git::default'
 
+extend TransitTips::UserHelpers
+
+chef_user = chef
+
 execute 'start ssh agent' do
   action :run
-  user node['nginx']['user']
+  user chef_user.name
   command 'eval `ssh-agent`'
 end
 
-transit_tips_path = File.join(Dir.home('vagrant'), node['transit.tips']['dir'])
-# directory transit_tips_path do
-#   recursive true
-#   # user node['nginx']['user']
-#   # group node['nginx']['group']
-# end
+transit_tips_path = File.join(chef_user.home, node['transit.tips']['dir'])
 
 # transit.tips
 execute 'clone transit.tips' do
   action :run
-  user 'vagrant'
+  user chef_user.name
   command "git clone #{node['transit.tips']['url']} #{transit_tips_path}"
   not_if "ls #{transit_tips_path}"
 end
@@ -30,49 +29,34 @@ end
 rsa_ofer987_key_path = File.join(Chef::Config[:file_cache_path], 'rsa_github_ofer987')
 cookbook_file rsa_ofer987_key_path do
   action :create
-  owner 'vagrant'
+  owner chef_user.name
   mode '0400'
   source 'rsa_github_ofer987'
 end
 
-ssh = File.join(Dir.home('vagrant'), '.ssh')
+ssh = File.join(chef_user.home, '.ssh')
 directory ssh do
-  owner 'vagrant'
+  owner chef_user.name
   action :create
 end
 
 known_hosts = File.join(ssh, 'known_hosts')
 file known_hosts do
-  owner 'vagrant'
+  owner chef_user.name
   action :create
 end
 
 # add github.com as a known host
 execute "add github.com to #{known_hosts}" do
   action :run
-  user 'vagrant'
+  user chef_user.name
   command "echo `ssh-keyscan github.com` >> #{known_hosts}"
 end
 
-# create known_hosts file
-# ssh_directory = File.join('~root/.ssh')
-# directory ssh_directory do
-#   owner 'root'
-#   action :create
-# end
-
-# execute "link #{known_hosts} to ~root/.ssh/known_hosts directory" do
-#   action :run
-#   user 'root'
-#   command "ln -sf #{known_hosts} ~root/.ssh/known_hosts"
-# end
-
-# should this be ~nginx? or should this be in ~vagrant?
-secrets_path = File.join(Dir.home('vagrant'), node['secrets']['dir'])
+secrets_path = File.join(chef_user.home, node['secrets']['dir'])
 execute 'clone secrets' do
   action :run
-  user 'vagrant'
-  # user node['nginx']['user']
+  user chef_user.name
   command "eval `ssh-agent`; ssh-add #{rsa_ofer987_key_path}; git clone #{node['secrets']['url']} #{secrets_path}"
   not_if "ls #{secrets_path}"
 end
