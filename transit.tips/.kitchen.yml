@@ -1,8 +1,6 @@
 ---
 driver:
-  name: vagrant
-  network:
-    - ['private_network', { ip: '192.168.8.8' }]
+  name: digitalocean
 
 provisioner:
   name: chef_zero
@@ -12,7 +10,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-17
 
 suites:
   - name: default
