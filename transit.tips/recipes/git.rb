@@ -6,9 +6,7 @@
 
 include_recipe 'git::default'
 
-extend TransitTips::UserHelpers
-
-chef_user = chef
+chef_user = my_root_user
 
 execute 'start ssh agent' do
   action :run

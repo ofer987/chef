@@ -8,13 +8,11 @@
 
 include_recipe 'nginx::default'
 
-extend TransitTips::UserHelpers
+chef_user = my_root_user
+nginx_user = my_nginx_user
 
-chef_user = chef
-nginx_user = nginx
-
-ssl_certificate_path = File.join(chef_user.home, node['secrets']['dir'], 'certificates', 'transit.tips.chained.crt')
-ssl_key_path = File.join(chef_user.home, node['secrets']['dir'], 'certificates', 'transit.tips.key')
+ssl_certificate_path = File.join(chef_user.secrets_path, 'certificates', 'transit.tips.chained.crt')
+ssl_key_path = File.join(chef_user.secrets_path, 'certificates', 'transit.tips.key')
 
 nginx_site 'client' do
   action :enable

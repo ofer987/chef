@@ -2,35 +2,15 @@
 # Chef Documentation
 # https://docs.chef.io/libraries.html
 #
-module TransitTips
-  module UserHelpers
+class Chef
+  class Recipe
     class User
-      attr_reader :name, :home
+      attr_reader :name, :home, :node
 
-      def initialize(name, home)
+      def initialize(name, home, node)
         self.name = name or raise 'name cannot be nil'
         self.home = home or raise 'home cannot be nil'
-      end
-
-      def create!
-        user name do
-          home home
-          shell '/bin/bash'
-          action :create
-        end
-      end
-
-      def create_home!
-        return unless Dir.exist?(home)
-
-        directory home do
-          recursive true
-          mode 0755
-          owner name
-          group name
-
-          action :create
-        end
+        self.node = node or raise 'node cannot be nil'
       end
 
       def transit_tips_path
@@ -43,22 +23,19 @@ module TransitTips
 
       private
 
-      attr_writer :name, :home
+      attr_writer :name, :home, :node
     end
 
-    def chef
-      User.new('chef', '/home/chef').tap do |user|
-        user.create!
-        user.create_home!
-      end
+    def my_chef_user
+      User.new('chef', '/home/chef', node)
     end
 
-    def nginx
-      username = node['nginx']['user']
+    def my_nginx_user
+      User.new(node['nginx']['user'], Dir.home(node['nginx']['user']), node)
+    end
 
-      # assume that the user has already been created
-      # by the nginx cookbook
-      User.new(username, Dir.home(username))
+    def my_root_user
+      User.new('root', Dir.home('root'), node)
     end
   end
 end
