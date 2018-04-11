@@ -18,12 +18,12 @@ describe port(80) do
 end
 
 describe package 'nginx' do
-  it { is_expected.to be_installed }
+  xit { is_expected.to be_installed }
 end
 
 describe service 'nginx-client' do
-  it { is_expected.to be_enabled }
-  it { is_expected.to be_running }
+  xit { is_expected.to be_enabled }
+  xit { is_expected.to be_running }
 end
 
 describe port 80 do
@@ -35,9 +35,9 @@ describe command 'wget -qSO- --spider localhost' do
 end
 
 describe command 'wget -qO- localhost' do
-  its(:stdout) { is_expected.to match %r{Getting Schedule} }
+  # its(:stdout) { is_expected.to match %r{Getting Schedule} }
 end
 
 describe service 'nginx-client', :skip do
-  it { should have_module('nginx::http_v2_module') }
+  xit { should have_module('nginx::http_v2_module') }
 end

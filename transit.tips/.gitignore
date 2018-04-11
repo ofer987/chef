@@ -23,3 +23,5 @@ Policyfile.lock.json
 
 files/**/*
 test/fixtures/**/*
+
+.rbenv-vars

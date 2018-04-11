@@ -1,4 +1,4 @@
-# (node['nginx']['source']['modules'] ||= []) << 'nginx::http_v2_module'
+default['nginx']['server_names_hash_bucket_size'] = '128'
 
 default['transit.tips']['url'] = 'https://github.com/ofer987/transit.tips.git'
 default['transit.tips']['dir'] = 'transit.tips'

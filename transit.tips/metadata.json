@@ -1,0 +1,41 @@
+{
+  "name": "transit.tips",
+  "description": "Installs/Configures transit.tips",
+  "long_description": "Installs/Configures transit.tips",
+  "maintainer": "Dan Jakob Ofer",
+  "maintainer_email": "dan@ofer.to",
+  "license": "MIT",
+  "platforms": {
+
+  },
+  "dependencies": {
+    "nginx": "~> 7.0.2",
+    "git": "~> 8.0.0",
+    "nodejs": "~> 5.0.0",
+    "ruby_rbenv": "~> 2.0.5"
+  },
+  "providing": {
+
+  },
+  "attributes": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": "",
+  "privacy": false,
+  "chef_versions": [
+    [
+      ">= 12.1"
+    ]
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}
